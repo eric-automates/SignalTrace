@@ -1,25 +1,22 @@
-# SignalTrace — GitHub Pages edition
+# SignalTrace timing update
 
-The website is the single file `index.html`. It does **not** need a Python server, build process, API key, or installed packages.
+## Install the update
 
-## Put it on GitHub Pages
+1. Replace the existing `index.html` at the top level of your SignalTrace GitHub repository with the `index.html` in this folder and commit it.
+2. Wait for GitHub Pages to redeploy, then refresh your website. If the old view persists, try a hard refresh.
 
-1. In your GitHub repository, choose **Add file → Upload files**. Upload this version of **index.html** to the repository's top level, replacing the old `index.html` if necessary, and commit the change.
-2. In the repository, open **Settings → Pages**. Under **Build and deployment**, choose **Deploy from a branch**. Select your default branch (usually `main`) and **/(root)**, then click **Save**.
-3. Wait for GitHub to publish the site. The Pages screen will show the website address. Open it, type a U.S. ticker, and press Enter or **Analyze**. GitHub Pages availability can depend on repository visibility and your GitHub plan.
+The site remains a single static file. No server, API key, or new dependency is required. The file has not been uploaded to GitHub automatically.
 
-If your repository already uses a different Pages branch or folder, put `index.html` in that configured publishing location instead. This package has not been pushed to your repository for you.
+## Use the new views
 
-## Use
+Run a stock analysis as usual. Above the chart, choose:
 
-The page automatically loads a U.S. stock directory. Choose a time range, type a ticker or company name, and select a suggestion or press Enter on a ticker. It gathers stock and comparison data in the browser and displays the three closest eligible price lines. Changing the range reuses the downloaded data. Up to five years are displayed when available.
+- **Together:** the three existing closest price lines, ranked by price-index RMSE.
+- **Later:** up to two independent market or economic signals whose daily changes show the strongest positive correlation after stock movements.
+- **Earlier:** up to three independent signals whose daily changes show the strongest positive correlation before stock movements.
 
-To play songs, click **Add songs**, select audio files on your device, and press play. Your files stay on your device and must be selected again after reloading. **Loops** returns to the built-in generated music. Only use recordings you have rights to play.
+The timing views scan lags of 1–10 trading sessions (less for short windows), rank each source by its strongest positive correlation in the selected window, and show each source once per view. The correlation and matched sample count are displayed. Results are recalculated when the range changes; fewer than the requested number of lines may be shown if there is insufficient history or a source is unavailable.
 
-## Data and limitations
+For the timing charts, source movements stay on their **actual dates**; they are not shifted to force a match. Their changes are scaled using the ratio of stock and source volatility fitted before the displayed range, so different units can be viewed together. The lag is selected using the displayed window itself. This is an in-sample screening exercise, not a forecast or proof of causation. Testing many sources and lags can produce chance matches; FRED observation dates may not reflect when information became available. The app uses available market and macro proxies, not an exhaustive list of possible causes. Some formulas in the supplied PDF are not implemented.
 
-The browser fetches the Nasdaq Trader stock directory and unofficial Yahoo Finance adjusted prices through public cors.dev or Jina Reader relays. It automatically tries the other relay if one fails or returns an unusable response, and temporarily reuses successful results in browser memory to reduce repeated requests. It fetches FRED economic data through cors.dev, with explicitly labeled Yahoo market proxies if FRED is unavailable. A ticker directory from Twelve Data is used if the Nasdaq directory cannot be fetched. These third-party services can see requests, cache data, rate-limit, go offline, or change; Yahoo's endpoint is unofficial and generally intended for personal use. Review the data sources' terms before public or commercial deployment. The page reports failures instead of inventing data. No uptime or complete-market coverage is guaranteed.
-
-This Pages edition no longer includes the Fama–French five-factor data source present in the earlier Python-server version, because the static browser cannot reliably retrieve that source's ZIP file through the available public relays. It uses the other available lines and diagnostics; missing sources can reduce the number of candidates. The original Python-server version remains separate if you prefer that source.
-
-The closest-line ranking covers **only implemented models** with complete observations in the selected range. Many are derived from the stock's own earlier prices, and some are retrospective; closeness is not proof of cause or a forecast. Only a subset of the formulas in the supplied PDF has been implemented and some other methods, including ones that might use public data, remain to be built. This tool is not investment advice.
+The site still depends on external providers and public relays that may cache, rate-limit, fail, or change. Yahoo's unofficial data source may have use restrictions; review provider terms before public or commercial deployment.
