@@ -1,50 +1,54 @@
-# SignalTrace — industry input update
+# SignalTrace — research lab update
 
-## Publish
+## Publish and use
 
-Replace the existing `index.html` at the root of the GitHub repository with the `index.html` in this folder, commit the change, wait for GitHub Pages to deploy, and refresh the site. No server or API key is required. This package has not been uploaded to GitHub automatically.
+1. Replace the existing `index.html` at the root of the SignalTrace GitHub repository with the `index.html` in this folder. Commit it, wait for GitHub Pages to redeploy, and refresh.
+2. Enter a U.S. stock or company and analyze it as before. The default run loads a modest set of inputs selected using the company’s current sector and industry.
+3. To broaden the search, click **Load expanded data**. The compact status display shows completed requests, elapsed time, per-category progress, and failed requests. Two requests run at a time with a short pause between jobs. **Stop** stops the queue after the in-flight requests finish; partial results remain. Analyze a new ticker after the scan stops or finishes. Results are held in the page session, not saved to a server.
+4. The Together, Later and Earlier tabs chart up to three, two and three input lines respectively. Choose **Top 10** to list up to ten eligible candidates; the graph remains limited to the requested number. Explore lets you chart any individual available daily input. Expand input coverage to see attempted feeds and unavailable ones.
+5. The capsule timeline below the chart shows the stock and the top three Earlier candidates in separate rows. Green denotes a rising regime and coral a falling regime. Hover over a capsule on desktop to see dates, duration, and excess area.
+6. The annual World Context section becomes available after expanded data loads. Select an indicator and country to view its annual observations and annual comparison chart. It uses available stock history, independently of the chosen daily window.
 
-Enter a U.S. stock ticker or choose a company from autocomplete and press Analyze. Choose a period before or after the analysis. The app retrieves its directory on page open, including sector and industry when available. You can add your own local audio files using **Add songs**; they stay on your device.
+Music: **Add songs** selects local audio on your own device; no upload is required. The player is below the page content so it does not obscure the graph.
 
-## How the input selection works
+## Input coverage and source categories
 
-The app attempts one Nasdaq-derived ticker-directory download containing company names, current sector and industry. It selects a curated collection of plausible inputs by sector, refines it using broad industry-name patterns, and adds some loosely related inputs. It never claims these are the company's verified suppliers, customers, operating locations, or actual causes. The current classification is applied to the entire displayed history. If classification is missing or the directory fallback lacks it, only broad-market inputs are selected and the limitation is shown. This is not an exhaustive list of possible influences.
+The ticker directory contains a company’s current sector and industry; a curated cross-reference chooses industry-related daily market and macro inputs. An unclassified company uses broad-market inputs. The expanded scan adds a larger, **finite, not exhaustive** collection of sector and international funds, bonds, rates, credit spreads, currencies, commodity futures and spot oil prices. It also tries:
 
-Every analysis starts with the broad market, Nasdaq 100, 10-year Treasury yield, VIX, and the U.S. news-based economic policy uncertainty index when available. The cross-reference then adds, for example:
+- The AI-GPR daily newspaper-derived geopolitical risk indices, including general, threat, act and regional oil-news measures.
+- Historical daily regional temperature and precipitation for Houston, Chicago, London and Singapore. These are generic proxies and are not verified locations of a given company's operations or suppliers.
+- World Bank / UN international migrant stock and net-migration annual indicators for Canada, China, Germany, India, Mexico and the United States. Other countries, indicators, disasters and specific event-level feeds are not comprehensively covered.
 
-| Type | Examples of additional candidates |
-| --- | --- |
-| Energy | Energy and producer funds, WTI and Brent crude spot prices, natural-gas futures, copper futures, Houston regional mean temperature |
-| Technology | Technology and semiconductor funds, copper futures, euro exchange rate |
-| Materials and mining | Materials fund, copper futures, gold fund, WTI spot |
-| Finance | Financial and regional-bank funds, small caps, euro exchange rate |
-| Industrials | Industrial fund, copper futures, WTI spot, small caps |
-| Utilities | Utilities fund, natural gas, WTI, copper, Houston regional temperature |
-| Health care | Health-care and biotechnology funds, euro exchange rate |
-| Consumer discretionary | Consumer and retail funds, WTI, euro exchange rate |
-| Consumer staples | Staples fund, corn and wheat futures, WTI |
-| Real estate | Real-estate and industrial funds, copper futures, small caps |
-| Telecommunications | Communications, technology, and semiconductor funds; copper futures |
+The expanded catalog is global context, not a verified map of every company's suppliers, customers, production sites, or causal relationships. It does not pull all available global data, events, weather sites, tickers or economic indicators, and it is not possible to prove that it contains all relevant causes. Public sources can be unavailable, delayed, revised, rate-limited or change. A loaded source may lack enough aligned history to be ranked. The selected input list, warnings and per-category progress disclose coverage; failures do not generate invented data. Funds can contain the target stock, so those comparisons can be partly circular.
 
-Industry patterns add possible links for areas such as airlines, agriculture, autos, banks, oil, mining, semiconductors, and biotechnology. Agricultural, food, and transportation industries may receive Chicago regional temperature. These single-city weather series are coarse regional proxies, not locations verified for each company. Weather is historical reanalysis, can arrive late, and is not a forecast of what the market knew at the time. The policy uncertainty series is a news-based index, not a comprehensive database of world events. There is no company-specific event matching, global weather network, full supplier graph, or exhaustive feed of commodities.
+Annual migration estimates are **not** interpolated into daily signals or ranked as daily precursors. The annual chart separately scales the indicator and stock within their observed overlapping years to a 0–100 range, shows dots at observed years and breaks lines over missing years. The stock value is its last available close for each year; the current year may be incomplete. Observation years are not publication dates. Annual context is descriptive, not a test of migration's effect on a stock.
 
-## The four views
+## Timing analysis
 
-- **Together:** up to three eligible inputs with the strongest positive same-session correlation of source changes with stock returns.
-- **Later:** up to two eligible inputs whose changes have the strongest absolute correlations at 1–10 sessions after stock changes.
-- **Earlier:** up to three eligible inputs whose changes have the strongest absolute correlations at 1–10 sessions before stock changes.
-- **Explore:** select any loaded input to plot individually, provided it has enough pre-window history for scaling. The coverage section lists attempted feeds and whether they loaded; a loaded feed can still lack sufficient aligned data for ranking or scaling.
+- **Together** ranks available inputs by positive same-session correlation of daily changes and stock returns over the selected window.
+- **Earlier** chooses each input's strongest absolute correlation at lags of 1–10 trading sessions using the first 70% of the window, then reports correlation at the selected lag and direction on the final 30%. The top candidates are ranked using training correlation, not by looking at the holdout. Short windows permit fewer lags; fewer observations can yield no valid test. The holdout is a basic robustness check, not a trading backtest, causal test or guarantee of future performance. It is not immune to revisions, late publication, survivorship or date alignment problems.
+- **Later** ranks positive or negative correlations over lags of 1–10 sessions on the selected window. The Later view is not split into training and holdout.
 
-Together looks for movement in the same direction. Earlier and Later consider positive and negative correlations; a negative result is labeled inverse. Each source is represented once per view at its strongest lag. The app requires at least 40 pre-window pairs to estimate a source-to-stock volatility ratio and enough paired observations in the selected period for ranking. Lag searches are shorter in short windows. Insufficient history and missing observations can mean fewer than the maximum number of lines.
+The main graph uses the actual observation dates without shifting or flipping input lines. Source changes are scaled to stock volatility using pre-window observations, a visualization only, not their original prices. Missing values create gaps; each segment after a gap restarts at 100. Larger search spaces make chance matches more likely, and similar funds or geopolitical sub-indices are not statistically independent. No multiple-testing adjustment or confidence interval is currently computed.
 
-The displayed graph keeps observations on their original dates; it does not shift or invert the inputs to fit. Source changes are scaled to stock volatility using the period before the visible window. Missing observations leave gaps; each segment after a gap is rebased to 100. The scale is only a way to compare shapes, not the source's actual price. Funds can hold the analyzed stock, so their correlations may be partly circular. FRED observations can be revised, and their observation dates are not necessarily when information was available. Selecting the best lag over the same period and trying multiple inputs can produce chance results. **These are descriptive in-sample associations, not forecasts, evidence of causation, investment advice, or a complete explanation of the stock.**
+## Capsule method
 
-The previous PDF model and diagnostic code remains in the file; the ranked charts now compare external inputs rather than modeled price paths. Some PDF frameworks are not implemented.
+This is a Seeq-*inspired* approximation, not Seeq software or a complete implementation of its formulas. For each stock or input:
 
-## Sources and availability
+1. Compute a trailing sum of five trading-session changes: stock and market percentage returns, or differences in a non-price input's native units.
+2. Standardize against the mean and standard deviation of up to 504 valid observations **before** the displayed window (at least 40 are required). Different signals therefore have their own baseline.
+3. Begin an up or down capsule after two consecutive observations exceed +0.6 or fall below −0.6 standard deviations. Once confirmed, the displayed start is the first of those two observations. End the capsule after two observations return inside the signed ±0.25 exit threshold; the exit-confirmation observations are not included. Missing data end a capsule; maximum length is 252 sessions.
+4. Report duration in trading sessions and **excess area**, the discrete sum of standardized distance above the signed exit threshold across included sessions. It is a descriptive measure, not a dollar amount or an actual integral of the raw asset price.
+5. For each earlier candidate, show a signed overlap statistic on the holdout only: compare its states shifted forward by its training-selected lag with the stock states, respecting positive or inverse association. The score is the number of sessions with matching active signed states divided by the number of valid sessions where either state is active. Timeline bars themselves stay on actual dates and are never shifted.
 
-- Directory/classification: [top-us-stock-tickers](https://github.com/zyhe16/top-us-stock-tickers), a third-party Nasdaq screener dataset. Nasdaq Trader and Twelve Data are fallback directories but do not supply this classification.
-- Stock/fund and commodity futures history: unofficial Yahoo Finance endpoints accessed through public relays. Futures and funds are proxies and can behave differently from physical spot prices. Yahoo data may have use restrictions.
-- WTI/Brent spot, rates, currencies, VIX, and economic policy uncertainty: [FRED](https://fred.stlouisfed.org/). The U.S. daily news-based Economic Policy Uncertainty Index is by Scott Baker, Nicholas Bloom, and Steven J. Davis. Selected FRED series have labeled Yahoo fallbacks; the fallback is not the same series. FRED economic data can be revised and time-stamped by observation period rather than release date.
-- Regional historical mean temperature: [Open-Meteo Historical Weather](https://open-meteo.com/en/docs/historical-weather-api), Open-Meteo weather data under CC BY 4.0 with required attribution; its free API is for noncommercial use. Check Open-Meteo's terms for commercial use.
-- Yahoo/FRED access uses public relays, including cors.dev and Jina Reader, which can see requests and may cache, fail, rate-limit, or change. Yahoo is unofficial. Availability, coverage, and results cannot be guaranteed. No provider credentials are stored in this file.
+A higher overlap or matching capsule durations can be useful for exploration, but **does not prove that signals are equivalent, that one causes the other, or that future behavior will repeat**. A common driver, chance, revisions, changing thresholds or market composition can produce similar patterns. This tool cannot make causes “perfectly clear.” The supplied PDF's other formulas remain only partly implemented; this version does not claim full Seeq feature parity.
+
+## Sources and usage limits
+
+- Ticker metadata: [top-us-stock-tickers](https://github.com/zyhe16/top-us-stock-tickers), a third-party Nasdaq screener dataset. Nasdaq Trader and Twelve Data are fallback directories without sector/industry classification.
+- Market/futures data: unofficial Yahoo Finance endpoints through public relays; futures and funds are proxies, not spot prices. Review Yahoo terms before deployment.
+- Economic/commodity data: [FRED](https://fred.stlouisfed.org/); selected failed basic feeds have clearly named market fallbacks. U.S. Economic Policy Uncertainty Index by Scott Baker, Nicholas Bloom and Steven J. Davis, via FRED.
+- Geopolitical data: Matteo Iacoviello and Jonathan Tong, [AI-GPR Index](https://www.matteoiacoviello.com/ai_gpr.html), daily newspaper-derived measures, cited per their request. These data are subject to revisions and may be published after their observation dates; they are not a complete event log.
+- Weather: [Open-Meteo Historical Weather](https://open-meteo.com/en/docs/historical-weather-api), CC BY 4.0 with attribution. Free API access is for noncommercial use; commercial usage needs appropriate terms. Weather reanalysis is retrospective, can be late and can differ from information available at the time.
+- Annual population and migration indicators: [World Bank Data API](https://datahelpdesk.worldbank.org/knowledgebase/articles/889392-about-the-indicators-api-documentation), based on UN estimates as documented by each indicator. Observation years are not release dates.
+- cors.dev and Jina Reader public relays can see requests, cache, fail, rate-limit, or change. This GitHub Pages file needs no private API key or server, but relies on external providers. The app does not bundle provider datasets. Review terms, attribution and applicable licensing before public or commercial use.
